@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Architektur
-permalink: /architecture
+permalink: /docs/architecture/
 ---
 
 # Architektur

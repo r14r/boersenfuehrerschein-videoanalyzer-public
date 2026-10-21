@@ -14,23 +14,23 @@ plugins:
 
 navigation:
   - title: Überblick
-    url: /
+    url: /docs/
   - title: Architektur
-    url: /architecture
+    url: /docs/architecture/
   - title: End-to-End Workflow
-    url: /workflow
+    url: /docs/workflow/
   - title: Transkripte
-    url: /transcripts
+    url: /docs/transcripts/
   - title: Retrieval & RAG
-    url: /retrieval-rag
+    url: /docs/retrieval-rag/
   - title: Prompting & UI
-    url: /prompting-ui
+    url: /docs/prompting-ui/
   - title: API & Datenmodell
-    url: /api-data-model
+    url: /docs/api-data-model/
   - title: Betrieb & Entwicklung
-    url: /operations-development
+    url: /docs/operations-development/
   - title: Roadmap
-    url: /roadmap
+    url: /docs/roadmap/
 
 repository_url: "https://github.com/r14r/boersenfuehrerschein-videoanalyzer-public"
 project_url: "https://github.com/r14r/Boersenfuehrerschein-VideoAnalyzer"

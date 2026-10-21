@@ -1,7 +1,7 @@
 ---
 layout: default
 title: API & Datenmodell
-permalink: /api-data-model
+permalink: /docs/api-data-model/
 ---
 
 # API & Datenmodell

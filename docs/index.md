@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Überblick
-permalink: /
+permalink: /docs/
 ---
 
 # Video Analyzer

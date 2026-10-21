@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Prompting & UI
-permalink: /prompting-ui
+permalink: /docs/prompting-ui/
 ---
 
 # Prompting & UI

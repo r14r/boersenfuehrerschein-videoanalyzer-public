@@ -1,7 +1,7 @@
 ---
 layout: default
 title: End-to-End Workflow
-permalink: /workflow
+permalink: /docs/workflow/
 ---
 
 # End-to-End Workflow

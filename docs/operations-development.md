@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Betrieb & Entwicklung
-permalink: /operations-development
+permalink: /docs/operations-development/
 ---
 
 # Betrieb & Entwicklung

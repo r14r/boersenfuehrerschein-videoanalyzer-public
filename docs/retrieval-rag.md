@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Retrieval & RAG
-permalink: /retrieval-rag
+permalink: /docs/retrieval-rag/
 ---
 
 # Retrieval & RAG

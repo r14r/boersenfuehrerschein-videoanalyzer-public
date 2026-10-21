@@ -13,12 +13,12 @@
       <button type="button" class="open-nav" id="open-nav" aria-label="Navigation öffnen">
         <img src="{{ '/images/menu.svg' | relative_url }}" alt="">
       </button>
-      <a href="{{ '/' | relative_url }}">
+      <a href="{{ '/docs/' | relative_url }}">
         <img src="{{ '/images/logo.svg' | relative_url }}" alt="{{ site.title }}">
       </a>
     </h1>
 
-    <form action="{{ '/search/' | relative_url }}" method="get" class="search-form">
+    <form action="{{ '/docs/search/' | relative_url }}" method="get" class="search-form">
       <input type="search" name="q" id="search-input" placeholder="Dokumentation durchsuchen" aria-label="Dokumentation durchsuchen">
     </form>
 

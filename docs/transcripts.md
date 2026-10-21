@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Transkripte
-permalink: /transcripts
+permalink: /docs/transcripts/
 ---
 
 # Transkripte
