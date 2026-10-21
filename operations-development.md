@@ -19,22 +19,49 @@ just data-clear
 ~~~
 
 ## Persistenz
-Media und Analyse-State liegen persistent im Datenbereich. Das Chromium-Profil liegt in einem Docker-Named-Volume. Der Retrieval Store liegt in SQLite im Analyse-State.
+
+Media und Analyse-State liegen persistent im Datenbereich. Das Chromium-Profil liegt in einem Docker-Named-Volume. Retrieval Sources liegen in SQLite; semantische Embeddings liegen im RAG-Index.
+
+## RAG Context Window
+
+Der semantische Transcript-Kontext wird über eine Umgebungsvariable gesteuert:
+
+~~~bash
+RAG_CONTEXT_RADIUS=2
+~~~
+
+Default ist `2`. Damit umfasst ein Context Window maximal fünf Sätze:
+
+~~~text
+2 vorher + Citation + 2 nachher
+~~~
+
+Eine Änderung sollte mit einem Rebuild/Restart des Backends verbunden werden. Durch RAG-Schema v4 erkennt der Backend-Sync inkompatible ältere Indexdaten und erzeugt die Embeddings neu.
 
 ## Rebuild
 
 ~~~bash
 just docker-build-service backend
-just docker-build-service transcriber
 just docker-up
+~~~
+
+Nach Änderungen an Transcriber-Abhängigkeiten zusätzlich:
+
+~~~bash
+just docker-build-service transcriber
 ~~~
 
 ## Teststrategie
 
+Wichtige Prüfpunkte:
+
 1. YAML enthält Sprecher und Millisekunden-Timeframes.
-2. Source Store enthält erwartete Sätze.
-3. FTS findet exakte Begriffe.
-4. Search API liefert korrekte Video-ID und Zeitwerte.
-5. RAG behält Source IDs bis zur Antwort.
-6. UI springt zur erwarteten Stelle.
-7. Legacy-JSON bleibt lesbar.
+2. Source Store enthält die erwarteten Citation Units.
+3. FTS findet exakte Begriffe und natürliche Locate-Queries.
+4. Context Window überschreitet keine Transcript-Grenzen.
+5. Center-Satz behält seine stabile Source-ID.
+6. Embedding-Text enthält Nachbarsätze.
+7. öffentliche Source enthält nicht den kompletten internen Embedding-Kontext.
+8. Hybrid Merge fusioniert lexical und semantic über dieselbe Source-ID.
+9. Chat-Source Card öffnet die richtige Videostelle.
+10. Legacy-JSON bleibt lesbar.
