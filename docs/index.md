@@ -36,3 +36,16 @@ Der Video Analyzer verarbeitet Videoinhalte zu einem **quellengenauen, durchsuch
 | NVIDIA | optionale externe LLMs |
 | Frontend | Bibliothek, Transkripte, Analyse, Chat, Player |
 | SQLite | State und Full-Text-Retrieval |
+
+## Dokumentationsbereiche
+
+Die technische Dokumentation ist in folgende Bereiche gegliedert:
+
+- [Architektur]({{ '/docs/architecture/' | relative_url }}) – Services, Datenklassen und Vertrauensgrenzen.
+- [End-to-End Workflow]({{ '/docs/workflow/' | relative_url }}) – Download, Transkription, Retrieval, Prompting und Playback.
+- [Transkripte]({{ '/docs/transcripts/' | relative_url }}) – YAML-Format, Zeitstempel und Editing.
+- [Retrieval & RAG]({{ '/docs/retrieval-rag/' | relative_url }}) – FTS5, Embeddings, Hybrid Retrieval, RRF und Context Windows.
+- [Prompting & UI]({{ '/docs/prompting-ui/' | relative_url }}) – Quellenprovenienz, Source Cards und Video-Deep-Links.
+- [API & Datenmodell]({{ '/docs/api-data-model/' | relative_url }}) – Source Store, FTS5 und Retrieval-Endpunkte.
+- [Betrieb & Entwicklung]({{ '/docs/operations-development/' | relative_url }}) – Docker, Konfiguration, Rebuild und Tests.
+- [Roadmap]({{ '/docs/roadmap/' | relative_url }}) – Umgesetzte und geplante Ausbaustufen.
