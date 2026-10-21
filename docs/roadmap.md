@@ -69,15 +69,20 @@ Implementiert:
 
 Damit ist semantisches Retrieval kontextreicher, ohne präzise Videozitate zu verlieren.
 
-## Phase 6 — Citation Validation
+## Phase 6 — Citation Validation ✅
 
-Nächster sinnvoller Schritt:
+Implementiert:
 
-- Modellantwort auf tatsächlich verwendete `[Quelle N]` analysieren
-- nur zitierte Sources prominent anzeigen
-- verwendete vs. bereitgestellte Sources unterscheiden
-- unbekannte/falsche Quellenreferenzen erkennen
+- `[Quelle N]` serverseitig gegen die tatsächlich bereitgestellte Prompt-Source-Liste validieren
+- `provided_source_ids`, `cited_source_ids` und `uncited_source_ids`
+- ungültige/out-of-range Quellenreferenzen erkennen
+- doppelte Quellenverweise deduplizieren
+- zitierte Sources prominent und unzitierte Sources separat im Chat darstellen
+
+Noch offen:
+
 - optional striktes strukturiertes Answer Schema
+- providerseitiges JSON-Schema, soweit vom jeweiligen Modell unterstützt
 
 ## Phase 7 — Provider-Neutraler Chat
 
