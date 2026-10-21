@@ -130,3 +130,50 @@ Ungültige Verweise wie `[Quelle 7]`, obwohl nur drei Sources bereitgestellt wur
 Die UI zeigt zitierte Quellen prominent und hält die ursprüngliche `[Quelle N]`-Nummerierung bei. Nicht zitierte, aber bereitgestellte Sources bleiben separat aufklappbar. Dadurch ist sichtbar, welcher Kontext verfügbar war und welche Sources das Modell tatsächlich referenziert hat.
 
 Wichtig: `cited_source_ids` werden nicht aus vom Modell erzeugten Dateinamen oder Zeitstempeln abgeleitet. Die Nummer `N` wird ausschließlich gegen die serverseitig bekannte Source-Liste aufgelöst.
+
+## Structured Answer Schema
+
+Nach dem Streaming der menschenlesbaren Modellantwort erzeugt das Backend ein providerneutrales Answer Envelope. Dadurch bleibt die UI responsiv, während die finale Antwort zusätzlich maschinenlesbar und validierbar wird.
+
+~~~json
+{
+  "schema": "video-analyzer.answer",
+  "schema_version": 1,
+  "answer": "NVIDIA wird an zwei Stellen behandelt [Quelle 1] [Quelle 3].",
+  "citations": [
+    {
+      "source_id": "video1:s000010",
+      "source_number": 1
+    },
+    {
+      "source_id": "video2:s000044",
+      "source_number": 3
+    }
+  ],
+  "citation_valid": true
+}
+~~~
+
+Das Modell erzeugt weiterhin normalen Antworttext mit `[Quelle N]`. Das Backend löst diese Marker gegen die tatsächlich bereitgestellte Prompt-Source-Liste auf und baut daraus das strukturierte Schema.
+
+### Warum kein LLM-generierter Zeitstempel im Schema?
+
+Das Structured Answer Schema enthält absichtlich nur die vertrauenswürdigen Referenzen:
+
+- `source_id`
+- ursprüngliche `source_number`
+
+Nicht enthalten sind vom Modell erzeugte Kopien von:
+
+- Sprecher
+- Dateiname
+- Startzeit
+- Endzeit
+
+Diese Metadaten werden weiterhin serverseitig aus der kanonischen Source aufgelöst. Damit kann eine Halluzination im Text die Playback-Zielposition nicht verändern.
+
+### Streaming-Kompatibilität
+
+Der Chat streamt weiterhin normalen Text. Erst beim Abschluss der Antwort wird das Envelope erzeugt und zusammen mit dem finalen `done`-Event sowie in der Chat-Session gespeichert.
+
+Die UI zeigt die verwendete Schema-Version in den LLM-Details, z. B. `Answer Schema v1`.
