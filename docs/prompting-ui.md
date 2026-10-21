@@ -177,3 +177,55 @@ Diese Metadaten werden weiterhin serverseitig aus der kanonischen Source aufgel�
 Der Chat streamt weiterhin normalen Text. Erst beim Abschluss der Antwort wird das Envelope erzeugt und zusammen mit dem finalen `done`-Event sowie in der Chat-Session gespeichert.
 
 Die UI zeigt die verwendete Schema-Version in den LLM-Details, z. B. `Answer Schema v1`.
+
+## Provider-neutraler Chat
+
+Der Chat ist nicht mehr fest an Ollama gebunden. Die Auswahl besteht aus einer expliziten Kombination aus Provider und Modell.
+
+Beispiel:
+
+~~~json
+{
+  "provider_id": "nvidia",
+  "model": "nvidia/nemotron-3.5-lightning-30b-a3b",
+  "message": "Wo wird NVIDIA erwähnt?",
+  "use_rag": true
+}
+~~~
+
+Der Datenfluss bleibt unabhängig vom Provider:
+
+~~~text
+Query
+  ↓
+Intent + Hybrid Retrieval
+  ↓
+Context Builder
+  ↓
+Provider / Model
+  ├─ Ollama
+  └─ NVIDIA / OpenAI-kompatibel
+  ↓
+Streaming-Antwort
+  ↓
+Citation Validation
+  ↓
+video-analyzer.answer v1
+  ↓
+Source Cards + Playback
+~~~
+
+### Lokale und externe Verarbeitung
+
+Die Chat-Optionen kennzeichnen die Datenverarbeitungsgrenze explizit:
+
+- `local`: Ollama verarbeitet den Prompt lokal.
+- `external`: Prompt und ausgewählter RAG-Kontext werden an den konfigurierten externen Provider übertragen.
+
+Die UI zeigt diese Grenze als `LOKAL` bzw. `EXTERN` an.
+
+### Modellfreigabe
+
+Für externe Provider akzeptiert der Chat ausschließlich Modelle, die im persistierten Modellkatalog als Chat-Modell eingetragen sind. Embedding-Modelle werden nicht als Chat-Ziel angeboten und serverseitig abgelehnt.
+
+Ollama bleibt aus Gründen der Rückwärtskompatibilität der Standardprovider, wenn kein `provider_id` angegeben wird.
