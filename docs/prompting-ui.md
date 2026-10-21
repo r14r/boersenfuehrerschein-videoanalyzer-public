@@ -80,3 +80,53 @@ Assistant-Nachrichten speichern zusätzlich `sources`, `source_ids`, `rag_mode`,
 ## Sicherheitsprinzip
 
 Das Modell entscheidet, **wie** es Inhalte erklärt. Das Backend entscheidet, **welche Quellen tatsächlich verwendet wurden** und welche Video-/Zeitmetadaten dazu gehören.
+
+## Citation Validation
+
+Nach Abschluss der Modellantwort wird jeder Verweis im Format `[Quelle N]` serverseitig validiert. Maßgeblich ist ausschließlich die Source-Liste, die tatsächlich in den Prompt aufgenommen wurde.
+
+Beispiel:
+
+~~~text
+Das Thema wird an zwei Stellen behandelt [Quelle 1] [Quelle 3].
+~~~
+
+Das Backend erzeugt daraus strukturierte Provenienz:
+
+~~~json
+{
+  "provided_source_ids": [
+    "video1:s000010",
+    "video1:s000011",
+    "video2:s000044"
+  ],
+  "cited_source_ids": [
+    "video1:s000010",
+    "video2:s000044"
+  ],
+  "uncited_source_ids": [
+    "video1:s000011"
+  ],
+  "invalid_citations": [],
+  "citation_valid": true
+}
+~~~
+
+Ungültige Verweise wie `[Quelle 7]`, obwohl nur drei Sources bereitgestellt wurden, werden nicht stillschweigend akzeptiert:
+
+~~~json
+{
+  "invalid_citations": [
+    {
+      "label": "Quelle 7",
+      "number": 7,
+      "reason": "out_of_range"
+    }
+  ],
+  "citation_valid": false
+}
+~~~
+
+Die UI zeigt zitierte Quellen prominent und hält die ursprüngliche `[Quelle N]`-Nummerierung bei. Nicht zitierte, aber bereitgestellte Sources bleiben separat aufklappbar. Dadurch ist sichtbar, welcher Kontext verfügbar war und welche Sources das Modell tatsächlich referenziert hat.
+
+Wichtig: `cited_source_ids` werden nicht aus vom Modell erzeugten Dateinamen oder Zeitstempeln abgeleitet. Die Nummer `N` wird ausschließlich gegen die serverseitig bekannte Source-Liste aufgelöst.
