@@ -86,11 +86,18 @@ Noch offen:
 - optional striktes strukturiertes Answer Schema
 - providerseitiges JSON-Schema, soweit vom jeweiligen Modell unterstützt
 
-## Phase 7 — Provider-Neutraler Chat
+## Phase 7 — Provider-Neutraler Chat ✅
 
-- Ollama und NVIDIA im Chat direkt auswählbar
-- identische Retrieval-/Source-Pipeline
-- providerunabhängiges Answer Schema
+Implementiert:
+
+- Ollama und NVIDIA/OpenAI-kompatible Provider im Chat auswählbar
+- gemeinsame Provider-/Modellauswahl über `GET /api/chat/options`
+- identische Retrieval-, Citation- und Structured-Answer-Pipeline
+- externe vs. lokale Datenverarbeitung sichtbar markiert
+- serverseitige Ablehnung nicht-chatfähiger externer Modelle
+- separates Context-Budget für externe Provider
+
+Als nächster Schritt folgt die Retrieval-Qualitätsmessung und Player-Navigation über mehrere Fundstellen.
 
 ## Phase 8 — Speaker Diarization
 
