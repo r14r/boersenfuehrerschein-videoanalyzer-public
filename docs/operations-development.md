@@ -65,3 +65,15 @@ Wichtige Prüfpunkte:
 8. Hybrid Merge fusioniert lexical und semantic über dieselbe Source-ID.
 9. Chat-Source Card öffnet die richtige Videostelle.
 10. Legacy-JSON bleibt lesbar.
+
+## Externe Chat-Provider
+
+Das konservative Prompt-Budget für externe Chat-Provider wird separat konfiguriert:
+
+~~~bash
+EXTERNAL_CHAT_NUM_CTX=8192
+~~~
+
+Dieser Wert steuert den internen Context Builder. Er wird nicht als Ollama-spezifische `num_ctx`-Option an externe OpenAI-kompatible APIs gesendet.
+
+Provider und Modelle werden unter **Admin → Provider / Modelle** verwaltet. Externe Credentials verbleiben serverseitig und werden nicht an den Browser ausgeliefert.
