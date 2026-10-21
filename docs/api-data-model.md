@@ -137,3 +137,63 @@ Chat-Antworten enthalten zusätzlich:
 ~~~
 
 Die Felder `sources`, `source_ids`, `cited_source_ids` usw. bleiben zur Rückwärtskompatibilität zusätzlich auf der bisherigen API-Ebene erhalten.
+
+## Chat Provider Selection
+
+### Optionen
+
+~~~http
+GET /api/chat/options
+~~~
+
+Beispiel:
+
+~~~json
+{
+  "default": {
+    "provider_id": "ollama",
+    "model": "qwen3:8b"
+  },
+  "options": [
+    {
+      "provider_id": "ollama",
+      "provider_name": "OLLAMA",
+      "model": "qwen3:8b",
+      "label": "OLLAMA · qwen3:8b",
+      "data_processing": "local"
+    },
+    {
+      "provider_id": "nvidia",
+      "provider_name": "NVIDIA",
+      "model": "nvidia/nemotron-3.5-lightning-30b-a3b",
+      "label": "NVIDIA · nvidia/nemotron-3.5-lightning-30b-a3b",
+      "data_processing": "external"
+    }
+  ]
+}
+~~~
+
+### Chat Request
+
+~~~json
+{
+  "message": "Fasse die Aussagen zu NVIDIA zusammen.",
+  "provider_id": "nvidia",
+  "model": "nvidia/nemotron-3.5-lightning-30b-a3b",
+  "use_rag": true,
+  "top_k": 6
+}
+~~~
+
+Die Antwort enthält zusätzlich zum Structured Answer Envelope:
+
+~~~json
+{
+  "provider_id": "nvidia",
+  "provider_name": "NVIDIA",
+  "data_processing": "external",
+  "model": "nvidia/nemotron-3.5-lightning-30b-a3b"
+}
+~~~
+
+Wird kein Provider angegeben, bleibt `ollama` der Default.
