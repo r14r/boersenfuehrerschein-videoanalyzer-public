@@ -1,0 +1,51 @@
+---
+layout: default
+title: Suche
+permalink: /search/
+sitemap: false
+---
+
+# Suche
+
+<p><span id="search-status">Suchbegriff eingeben.</span></p>
+<ul id="search-results"></ul>
+
+<script>
+(function () {
+  var pages = [
+    {% for item in site.navigation %}
+      {% assign target = site.pages | where: "url", item.url | first %}
+      {
+        title: {{ item.title | jsonify }},
+        url: {{ item.url | relative_url | jsonify }},
+        content: {% if target %}{{ target.content | strip_html | strip_newlines | jsonify }}{% else %}""{% endif %}
+      }{% unless forloop.last %},{% endunless %}
+    {% endfor %}
+  ];
+
+  var params = new URLSearchParams(window.location.search);
+  var query = (params.get("q") || "").trim();
+  var status = document.getElementById("search-status");
+  var results = document.getElementById("search-results");
+  var input = document.getElementById("search-input");
+  if (input) input.value = query;
+
+  if (!query) return;
+
+  var terms = query.toLocaleLowerCase("de-DE").split(/\s+/).filter(Boolean);
+  var matches = pages.filter(function (page) {
+    var haystack = (page.title + " " + page.content).toLocaleLowerCase("de-DE");
+    return terms.every(function (term) { return haystack.indexOf(term) !== -1; });
+  });
+
+  status.textContent = matches.length + " Ergebnis(se) für „" + query + "“";
+  matches.forEach(function (page) {
+    var li = document.createElement("li");
+    var a = document.createElement("a");
+    a.href = page.url;
+    a.textContent = page.title;
+    li.appendChild(a);
+    results.appendChild(li);
+  });
+})();
+</script>

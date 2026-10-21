@@ -1,11 +1,16 @@
 title: Video Analyzer
 description: Technische Dokumentation für Video-Ingestion, Transkription, Retrieval, RAG und quellengenaues Video-Prompting.
-theme: jekyll-theme-dinky
 lang: de-DE
 url: "https://r14r.github.io"
 baseurl: "/boersenfuehrerschein-videoanalyzer-public"
+permalink: pretty
+timezone: Europe/Copenhagen
 markdown: kramdown
 highlighter: rouge
+
+plugins:
+  - jekyll-seo-tag
+  - jekyll-sitemap
 
 navigation:
   - title: Überblick
@@ -27,5 +32,9 @@ navigation:
   - title: Roadmap
     url: /roadmap
 
+repository_url: "https://github.com/r14r/boersenfuehrerschein-videoanalyzer-public"
+project_url: "https://github.com/r14r/Boersenfuehrerschein-VideoAnalyzer"
+
 exclude:
   - README.md
+  - THIRD_PARTY_NOTICES.md
