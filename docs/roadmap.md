@@ -27,7 +27,7 @@ Implementiert:
 - Transcript-Priorisierung
 - Hybrid-Diagnose-Endpunkt
 
-## Phase 3 — Structured Answers ✅ Basis implementiert
+## Phase 3 — Structured Answers ✅
 
 Implementiert:
 
@@ -35,11 +35,13 @@ Implementiert:
 - vertrauenswürdige `source_ids`
 - Source-ID, Sprecher und Timeframe im Prompt-Kontext
 - persistente Provenienz in Chat-Sessions
+- providerneutrales `video-analyzer.answer` Schema v1
+- strukturierte Citations aus serverseitig validierten `[Quelle N]`-Referenzen
+- Freitext-Streaming plus maschinenlesbares finales Answer Envelope
 
-Noch offen:
+Optional später:
 
-- striktes optionales JSON-Ausgabeformat
-- Validierung tatsächlich verwendeter `[Quelle N]`
+- providerseitiges natives JSON-Schema, sofern das gewählte Modell dies zuverlässig unterstützt
 
 ## Phase 4 — Player Integration ✅ Basis implementiert
 
