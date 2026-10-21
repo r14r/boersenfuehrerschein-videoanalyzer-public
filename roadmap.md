@@ -8,7 +8,14 @@ permalink: /roadmap
 
 ## Phase 1 — Source Store & FTS ✅
 
-Implementiert: stabile Source IDs, SQLite Source Store, FTS5, Search API, automatische Synchronisation und Provenienz mit Sprecher/Timeframe.
+Implementiert:
+
+- stabile Transcript Source IDs
+- SQLite Source Store
+- FTS5
+- Search API
+- automatische Synchronisation
+- Sprecher/Timeframe-Provenienz
 
 ## Phase 2 — Hybrid Retrieval ✅
 
@@ -17,8 +24,7 @@ Implementiert:
 - FTS5 + semantische Embeddings
 - gewichtete Reciprocal Rank Fusion
 - Locate-vs-Knowledge Intent
-- Transcript-Priorisierung für Fundstellenfragen
-- strukturierte Retrieval-Provenienz
+- Transcript-Priorisierung
 - Hybrid-Diagnose-Endpunkt
 
 ## Phase 3 — Structured Answers ✅ Basis implementiert
@@ -30,35 +36,56 @@ Implementiert:
 - Source-ID, Sprecher und Timeframe im Prompt-Kontext
 - persistente Provenienz in Chat-Sessions
 
-Noch offen: optionales striktes JSON-Ausgabeformat und automatische Prüfung der tatsächlich zitierten `[Quelle N]`.
+Noch offen:
+
+- striktes optionales JSON-Ausgabeformat
+- Validierung tatsächlich verwendeter `[Quelle N]`
 
 ## Phase 4 — Player Integration ✅ Basis implementiert
 
 Implementiert:
 
-- Source Cards im Chat
-- Deep Links mit `?t=` und `&end=`
+- Source Cards
+- Deep Links `?t=` / `&end=`
 - Seek/Play
-- Pausieren am Ende eines referenzierten Bereichs
+- Pausieren am Ende des referenzierten Bereichs
 
-Noch offen: Timeline-Markierungen und vorherige/nächste Quelle im Player.
+Noch offen:
 
-## Phase 5 — Context Windows
+- Timeline-Markierungen
+- vorherige/nächste Source direkt im Player
 
-Nächster Retrieval-Ausbauschritt:
+## Phase 5 — Context Windows ✅
 
-- benachbarte Transcript-Sätze als Context Window
-- Citation Units einzeln erhalten
-- überlappende Treffer deduplizieren
-- Kontextfenster an das LLM, konkrete Source Units an die UI
+Implementiert:
 
-## Phase 6 — Provider-Neutraler Chat
+- pro Citation Unit ein zentriertes semantisches Context Window
+- konfigurierbarer Radius über `RAG_CONTEXT_RADIUS`
+- Default: zwei Sätze vorher und zwei nachher
+- Embedding und Prompt-Kontext verwenden das Fenster
+- UI/Source bleibt der zentrale einzelne Satz
+- Context-Source-IDs und Context-Timeframe als Provenienz
+- RAG-Index-Schema v4
 
-- Ollama und NVIDIA direkt auswählbar
+Damit ist semantisches Retrieval kontextreicher, ohne präzise Videozitate zu verlieren.
+
+## Phase 6 — Citation Validation
+
+Nächster sinnvoller Schritt:
+
+- Modellantwort auf tatsächlich verwendete `[Quelle N]` analysieren
+- nur zitierte Sources prominent anzeigen
+- verwendete vs. bereitgestellte Sources unterscheiden
+- unbekannte/falsche Quellenreferenzen erkennen
+- optional striktes strukturiertes Answer Schema
+
+## Phase 7 — Provider-Neutraler Chat
+
+- Ollama und NVIDIA im Chat direkt auswählbar
 - identische Retrieval-/Source-Pipeline
-- providerunabhängiges Answer-Schema
+- providerunabhängiges Answer Schema
 
-## Phase 7 — Speaker Diarization
+## Phase 8 — Speaker Diarization
 
 - echte Sprechererkennung
 - Mapping auf bestehendes YAML
@@ -66,4 +93,4 @@ Nächster Retrieval-Ausbauschritt:
 
 ## Qualitätsziel
 
-„Wo wird XY erwähnt?“ liefert Fundstellen, die direkt zu **Video + Sprecher + millisekundengenauer, abspielbarer Originalstelle** führen.
+„Wo wird XY erwähnt?“ liefert Fundstellen, die direkt zu **Video + Sprecher + millisekundengenauer, abspielbarer Originalstelle** führen, während semantisches Retrieval genügend Nachbarsatz-Kontext besitzt.
