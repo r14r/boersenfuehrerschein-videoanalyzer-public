@@ -6,7 +6,7 @@ permalink: /api-data-model
 
 # API & Datenmodell
 
-## Transcript Source
+## Transcript Source Store
 
 ~~~sql
 CREATE TABLE transcript_sources (
@@ -24,33 +24,82 @@ CREATE TABLE transcript_sources (
 );
 ~~~
 
-FTS5 indexiert Text, während Provenienz in der normalen Tabelle bleibt.
+Die stabile Source-ID lautet `<video-id>:<sentence-id>`.
 
-## Search API
+## FTS5
+
+~~~sql
+CREATE VIRTUAL TABLE transcript_sources_fts USING fts5(
+  source_id UNINDEXED,
+  transcript_job_id UNINDEXED,
+  video_id UNINDEXED,
+  speaker,
+  text,
+  tokenize='unicode61 remove_diacritics 2'
+);
+~~~
+
+## Lexical Search API
 
 ~~~http
 GET /api/retrieval/search?q=Kurs-Umsatz-Verhältnis&limit=20
 ~~~
 
+Optional:
+
+~~~http
+GET /api/retrieval/search?q=NVIDIA&video_id=video123
+~~~
+
+## Hybrid Search API
+
+~~~http
+GET /api/retrieval/hybrid-search?q=Wo%20wird%20NVIDIA%20erwähnt%3F&limit=20
+~~~
+
+Die Antwort enthält Query Intent, Modus, Fallback-Hinweis, Retrieval-Methoden und Scores sowie vollständige Source-Provenienz.
+
+## Source Lookup
+
+~~~http
+GET /api/retrieval/sources/video123:s000042
+~~~
+
+## Public Source Shape
+
 ~~~json
 {
-  "query": "Kurs-Umsatz-Verhältnis",
-  "mode": "lexical",
-  "results": [{
-    "source_id": "video_abc:s000127",
-    "video_id": "video_abc",
-    "speaker": "Sprecher 1",
-    "start_seconds": 761.2,
-    "end_seconds": 769.9,
-    "timeframe": {"start":"00:12:41.200","end":"00:12:49.900"},
-    "text": "Das Kurs-Umsatz-Verhältnis ...",
-    "score": 8.42
-  }]
+  "source_id": "video123:s000042",
+  "video_id": "video123",
+  "speaker": "Sprecher 1",
+  "start_seconds": 313.1,
+  "end_seconds": 322.3,
+  "timeframe": "00:05:13.100–00:05:22.300",
+  "media_url": "/api/videos/video123/media",
+  "text": "NVIDIA ..."
+}
+~~~
+
+## Chat Response
+
+~~~json
+{
+  "answer": "...",
+  "sources": [...],
+  "source_ids": ["video123:s000042"],
+  "rag_mode": "hybrid",
+  "rag_fallback": null,
+  "context_budget": {
+    "query_intent": "locate",
+    "rag_sources": 4
+  }
 }
 ~~~
 
 ## Synchronisation
-Nach Transkription: YAML laden, Sources erzeugen, Sources des Jobs atomar ersetzen/upserten, FTS aktualisieren und Embeddings nur für geänderte Content-Hashes neu berechnen.
+
+Nach erfolgreicher Transkription wird der aktive Source-Bestand des Videos ersetzt, FTS aktualisiert und der semantische Index inkrementell synchronisiert. Dasselbe gilt nach Transcript-Editing.
 
 ## Löschen
-Beim dauerhaften Löschen eines Videos müssen Sources, FTS-Zeilen und Embeddings entfernt werden.
+
+Beim Löschen eines Videos werden die zugehörigen Transcript Sources und FTS-Zeilen entfernt.
