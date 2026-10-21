@@ -103,3 +103,37 @@ Nach erfolgreicher Transkription wird der aktive Source-Bestand des Videos erset
 ## Löschen
 
 Beim Löschen eines Videos werden die zugehörigen Transcript Sources und FTS-Zeilen entfernt.
+
+## Structured Answer Envelope
+
+Chat-Antworten enthalten zusätzlich:
+
+~~~json
+{
+  "structured_answer": {
+    "schema": "video-analyzer.answer",
+    "schema_version": 1,
+    "answer": "Das Thema wird hier erläutert [Quelle 2].",
+    "citations": [
+      {
+        "source_id": "video123:s000042",
+        "source_number": 2
+      }
+    ],
+    "provided_source_ids": [
+      "video123:s000041",
+      "video123:s000042"
+    ],
+    "cited_source_ids": [
+      "video123:s000042"
+    ],
+    "uncited_source_ids": [
+      "video123:s000041"
+    ],
+    "invalid_citations": [],
+    "citation_valid": true
+  }
+}
+~~~
+
+Die Felder `sources`, `source_ids`, `cited_source_ids` usw. bleiben zur Rückwärtskompatibilität zusätzlich auf der bisherigen API-Ebene erhalten.
